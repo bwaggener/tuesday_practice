@@ -7,11 +7,59 @@ output: html_document
 library(tidyverse)
 library(tidytuesdayR)
 library(ggplot2)
-
+library(lubridate)
+library(ggforce)
 ```
 
-Get data
+#Get data
 ```{r getdatasets}
 water_quality <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-05-20/water_quality.csv')
 weather <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-05-20/weather.csv')
 ```
+
+#init. thoughts
+
+These dataset contain information about the water quality, location, weather, and city council in Sydney Australia.
+
+It might be interesting to see if certain city councils are responsible for better or worse water quality--might be difficult to control for other variables because they are likely to be confounds (e.g., some councils might oversee areas with worse pollution unrelated to their policies).
+
+Still, I can make some informative plots.
+
+Here are some questions from the gihub page:
+* Has the water quality declined over this period?
+* How does rainfall impact E-coli bacteria levels?
+* Are some swimming sites particularly prone to high bacteria levels following rain?
+
+Lets first explore the data and see what we're working with.
+
+#WaterQualityOverTime
+
+To do this we will have to first make a new variable from the data variable in the water_quality dataset. The purpose of this is to make the x axis more meaningful and easier to interpret when the date variable is plotted on the x axis.
+
+We will make a new dataset called yr_avg_water_quality with the variables "year" and "avg_bacteria_cfu" which is the average bacteria count across a year.
+
+```{r yearly_average_bacteria_df}
+yr_avg_water_quality <-water_quality %>%
+  group_by(council, year(date)) %>%
+  summarize(avg_bacteria_cfu = mean(enterococci_cfu_100ml, na.rm = TRUE))
+
+yr_avg_water_quality <- yr_avg_water_quality %>%
+rename(year = "year(date)")
+```
+
+
+```{r yearXbacteria}
+yr_avg_water_quality %>%
+  ggplot(aes(x = year, y = avg_bacteria_cfu)) +
+  geom_point()
+```
+
+```{r yearXbacteria_facetwrap}
+yr_avg_water_quality %>%
+  ggplot(aes(x = year, y = avg_bacteria_cfu)) +
+  geom_point()+
+  facet_wrap(~ council)
+
+```
+
+
