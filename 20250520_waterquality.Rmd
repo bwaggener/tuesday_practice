@@ -51,7 +51,7 @@ rename(year = "year(date)")
 ```{r yearXbacteria}
 yr_avg_water_quality %>%
   ggplot(aes(x = year, y = avg_bacteria_cfu)) +
-  geom_point()
+  geom_smooth()
 ```
 
 ```{r yearXbacteria_facetwrap}
