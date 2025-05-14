@@ -1,0 +1,17 @@
+---
+title: "20250520_waterquality"
+output: html_document
+---
+
+```{r libraries}
+library(tidyverse)
+library(tidytuesdayR)
+library(ggplot2)
+
+```
+
+Get data
+```{r getdatasets}
+water_quality <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-05-20/water_quality.csv')
+weather <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-05-20/weather.csv')
+```
