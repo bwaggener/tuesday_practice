@@ -9,6 +9,7 @@ library(tidytuesdayR)
 library(ggplot2)
 library(lubridate)
 library(ggforce)
+library(lme4)
 ```
 
 #Get data
@@ -40,25 +41,53 @@ We will make a new dataset called yr_avg_water_quality with the variables "year"
 
 ```{r yearly_average_bacteria_df}
 yr_avg_water_quality <-water_quality %>%
-  group_by(council, year(date)) %>%
+  group_by(region, year(date)) %>%
   summarize(avg_bacteria_cfu = mean(enterococci_cfu_100ml, na.rm = TRUE))
 
 yr_avg_water_quality <- yr_avg_water_quality %>%
 rename(year = "year(date)")
 ```
 
-
+##fig. yrly_avg
 ```{r yearXbacteria}
 yr_avg_water_quality %>%
   ggplot(aes(x = year, y = avg_bacteria_cfu)) +
   geom_smooth()
-```
 
-```{r yearXbacteria_facetwrap}
 yr_avg_water_quality %>%
   ggplot(aes(x = year, y = avg_bacteria_cfu)) +
-  geom_point()+
-  facet_wrap(~ council)
+  geom_smooth()+
+  facet_wrap(~region)
+```
+
+##analysis_correlation
+```{r regression}
+water_quality %>%
+  mutate(date_num = as.numeric(date)) %>%
+  summarize(
+    correlation = cor.test(date_num, enterococci_cfu_100ml, method = "pearson", use = "complete.obs")$estimate,
+p_value = cor.test(date_num, enterococci_cfu_100ml, method = "pearson", use = "complete.obs")$p.value)
+
+water_quality %>%
+  mutate(date_num = as.numeric(date)) %>%
+  group_by(swim_site) %>%
+  summarize(
+    correlation = cor.test(date_num, enterococci_cfu_100ml, method = "pearson", use = "complete.obs")$estimate,
+    p_value = cor.test(date_num, enterococci_cfu_100ml, method = "pearson", use = "complete.obs")$p.value
+  )
+
+```
+
+The overall correlation between date and bacteria concentration is significantly negative so you can say that the amount of bacteria is decreasing over time. 
+
+#RainfallBacteria
+
+To figure out if there is a relationship between water quality and rainfall, we will need to merge the water_quality and weather datasets so that we line up the precipitation_mm variable from the weather df with the correct data variable from the water quality df and it doesn't create additional observations. 
+
+
+#```{r merge_df}
+#water_quality <- water_quality %>%
+  
 
 ```
 
