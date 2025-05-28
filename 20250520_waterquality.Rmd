@@ -85,10 +85,51 @@ The overall correlation between date and bacteria concentration is significantly
 To figure out if there is a relationship between water quality and rainfall, we will need to merge the water_quality and weather datasets so that we line up the precipitation_mm variable from the weather df with the correct data variable from the water quality df and it doesn't create additional observations. 
 
 
-#```{r merge_df}
-#water_quality <- water_quality %>%
-  
+```{r merge_df}
+water_quality_merge <- left_join(water_quality, weather, by = "date")
 
 ```
 
+##correlationPrecipXBacteria
+```{r correlation_precipitation_Bacteria}
+water_quality_merge %>%
+  ggplot(aes(x = precipitation_mm, y = enterococci_cfu_100ml)) +
+  geom_jitter(size = .75)+
+  geom_smooth() +
+  coord_cartesian(ylim = c(0, 10000)) 
+  
+```
 
+```{r correlation_rain}
+water_quality_merge %>%
+  summarize(
+    correlation = cor.test(precipitation_mm, enterococci_cfu_100ml, method = "pearson", use = "complete.obs")$estimate,
+p_value = cor.test(precipitation_mm, enterococci_cfu_100ml, method = "pearson", use = "complete.obs")$p.value)
+
+water_quality_merge %>%
+  group_by(swim_site) %>%
+  summarize(
+    correlation = cor.test(precipitation_mm, enterococci_cfu_100ml, method = "pearson", use = "complete.obs")$estimate,
+    p_value = cor.test(precipitation_mm, enterococci_cfu_100ml, method = "pearson", use = "complete.obs")$p.value
+  )
+```
+
+```{r shifted}
+water_quality_shifted <- water_quality_merge %>%
+  arrange(date) %>%
+  group_by(date) %>%
+  mutate(next_day_bacteria = lead(enterococci_cfu_100ml, 1))  # Shift by 1 day
+
+# Now, you can plot the correlation between precipitation on a given day and the bacteria level on the next day
+ggplot(water_quality_shifted, aes(x = precipitation_mm, y = next_day_bacteria)) +
+  geom_jitter(size = .75) +
+  geom_smooth()+
+  coord_cartesian(ylim = c(0, 10000)) +
+  labs(
+    x = "Precipitation (mm)",
+    y = "Bacteria Level (Day After Rain)"
+  )
+
+```
+
+```{r correlationwithshift}
