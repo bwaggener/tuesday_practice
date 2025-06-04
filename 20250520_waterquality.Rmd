@@ -132,4 +132,4 @@ ggplot(water_quality_shifted, aes(x = precipitation_mm, y = next_day_bacteria)) 
 
 ```
 
-```{r correlationwithshift}
+

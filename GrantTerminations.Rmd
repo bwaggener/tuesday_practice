@@ -1,0 +1,17 @@
+---
+title: "GrantTerminations"
+output: html_document
+---
+
+```{r libraries}
+library(tidyverse)
+library(tidytuesdayR)
+library(ggplot2)
+library(lubridate)
+library(ggforce)
+library(lme4)
+```
+
+```{r load_data}
+nsf_terminations <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-05-06/nsf_terminations.csv')
+```
