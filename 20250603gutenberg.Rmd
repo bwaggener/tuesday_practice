@@ -39,3 +39,16 @@ gutenberg_languages %>%
 The above tibble shows how many are available in each language. Most frequent being English with 60,693 books.
 
 #Do any authors appear under more than one gutenberg_author_id?
+
+```{r count_authors}
+gutenberg_authors %>%
+  group_by(author) %>%
+  summarise(count = n()) %>%
+  filter(count > 1)
+```
+
+##A total of 119 authors have more than one author id.
+
+# How might the {gutenbergr} package authors further refine the data for greater ease-of-use?
+
+
