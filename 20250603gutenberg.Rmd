@@ -3,3 +3,39 @@ title: "20250603gutenberg"
 output: html_document
 ---
 
+```{r libraries}
+library(tidyverse)
+library(tidytuesdayR)
+library(ggplot2)
+library(lubridate)
+library(ggforce)
+library(lme4)
+```
+
+
+```{r getdata}
+gutenberg_authors <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-06-03/gutenberg_authors.csv')
+gutenberg_languages <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-06-03/gutenberg_languages.csv')
+gutenberg_metadata <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-06-03/gutenberg_metadata.csv')
+gutenberg_subjects <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-06-03/gutenberg_subjects.csv')
+
+```
+
+```{r glimpse_all}
+glimpse(gutenberg_authors)
+glimpse(gutenberg_languages)
+glimpse(gutenberg_metadata)
+glimpse(gutenberg_subjects)
+```
+#How many different languages are available in the Project Gutenberg collection? How many books are available in each language?
+
+```{r frequency}
+gutenberg_languages %>%
+  group_by(language) %>%
+  summarise(count = n())
+```
+
+##There are 70 different languages in the Project Gutenberg Collection. 
+The above tibble shows how many are available in each language. Most frequent being English with 60,693 books.
+
+#Do any authors appear under more than one gutenberg_author_id?
