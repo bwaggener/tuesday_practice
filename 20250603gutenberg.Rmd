@@ -48,7 +48,16 @@ gutenberg_authors %>%
 ```
 
 ##A total of 119 authors have more than one author id.
+I also noticed that there were duplicates of books.
 
 # How might the {gutenbergr} package authors further refine the data for greater ease-of-use?
+##ideas
 
+more coherent bookshelf labels or broad categories for genres
 
+#explore
+```{r bookshelf_sort}
+gutenberg_metadata %>%
+  group_by(gutenberg_bookshelf) %>%
+  summarise(count = n())
+```
