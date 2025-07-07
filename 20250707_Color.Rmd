@@ -17,3 +17,5 @@ color_ranks <- readr::read_csv('https://raw.githubusercontent.com/rfordatascienc
 users <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-08/users.csv')
 ```
 
+Below I want to merge the answer df with the color_ranks df so that I can create bar plots showing the frequency of answers that participants gave. 
+
