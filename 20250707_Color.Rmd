@@ -1,0 +1,18 @@
+---
+title: "20250707_Color"
+output: html_document
+---
+
+```{r libraries}
+library(tidyverse)
+library(ggplot2)
+library(lubridate)
+library(ggforce)
+library(lme4)
+```
+
+```{r get_data}
+answers <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-08/answers.csv')
+color_ranks <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-08/color_ranks.csv')
+users <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-08/users.csv')
+```
