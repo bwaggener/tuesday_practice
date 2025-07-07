@@ -16,3 +16,4 @@ answers <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/ti
 color_ranks <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-08/color_ranks.csv')
 users <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-07-08/users.csv')
 ```
+
