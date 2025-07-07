@@ -19,3 +19,18 @@ users <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidy
 
 Below I want to merge the answer df with the color_ranks df so that I can create bar plots showing the frequency of answers that participants gave. 
 
+```{r merge_data}
+answers <- answers %>%
+  left_join(color_ranks, by = c("rank" = "rank")) %>%
+  mutate(color = factor(color, levels = color_ranks$color))
+```
+
+```{r plot_data}
+ggplot(answers, aes(x = color) +
+  geom_bar() +
+  labs(title = "Frequency of Answers by Color",
+       x = "Color",
+       y = "Frequency") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
